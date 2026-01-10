@@ -1,5 +1,8 @@
 name: Restock Checker
 
+permissions:
+  contents: write
+
 on:
   schedule:
     - cron: "*/5 * * * *"
