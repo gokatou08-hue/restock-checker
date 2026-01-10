@@ -21,7 +21,7 @@ before = state["in_stock"]
 if not before and now:
     requests.post(
         WEBHOOK,
-        json={"content": f"🎉 再入荷しました！\n{URL}"}
+        json={"content": f"🎉 @everyone 再入荷しました！\n{URL}"}
     )
     print("再入荷通知を送信しました")
 else:
@@ -30,5 +30,6 @@ else:
 state["in_stock"] = now
 with open("state.json", "w") as f:
     json.dump(state, f)
+
 
 
