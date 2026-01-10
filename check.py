@@ -3,7 +3,7 @@ import json
 import os
 
 URL = "https://www.stormst.com/products/detail/646"
-KEYWORD = "<html"
+KEYWORD = "カートに入れる"
 WEBHOOK = os.environ.get("DISCORD_WEBHOOK")
 
 headers = {
