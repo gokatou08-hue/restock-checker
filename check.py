@@ -3,7 +3,7 @@ import json
 import os
 
 URL = "https://www.stormst.com/products/detail/646"
-KEYWORD = "カートに入れる"
+KEYWORD = "<html"
 WEBHOOK = os.environ.get("DISCORD_WEBHOOK")
 
 headers = {
@@ -30,3 +30,4 @@ else:
 state["in_stock"] = now
 with open("state.json", "w") as f:
     json.dump(state, f)
+
