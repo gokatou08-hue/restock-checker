@@ -1,35 +1,41 @@
-import requests
-import json
-import os
+import requests, json, os
 
-URL = "https://www.stormst.com/products/detail/646"
-KEYWORD = "カートに入れる"
 WEBHOOK = os.environ.get("DISCORD_WEBHOOK")
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36"
+HEADERS = {
+    "User-Agent": "Mozilla/5.0"
 }
 
-html = requests.get(URL, headers=headers).text
-now = KEYWORD in html
+# 設定読み込み
+with open("config.json", "r", encoding="utf-8") as f:
+    config = json.load(f)
+
+items = config["items"]
+
+# state初期化
+if not os.path.exists("state.json"):
+    state = {item["name"]: False for item in items}
+    with open("state.json", "w") as f:
+        json.dump(state, f)
 
 with open("state.json", "r") as f:
     state = json.load(f)
 
-before = state["in_stock"]
+for item in items:
+    name = item["name"]
+    url = item["url"]
+    keyword = item["keyword"]
 
-if not before and now:
-    requests.post(
-        WEBHOOK,
-        json={"content": f"🎉 @everyone 再入荷しました！\n{URL}"}
-    )
-    print("再入荷通知を送信しました")
-else:
-    print("変化なし")
+    html = requests.get(url, headers=HEADERS, timeout=15).text
+    now = keyword in html
+    before = state.get(name, False)
 
-state["in_stock"] = now
+    if not before and now:
+        requests.post(WEBHOOK, json={
+            "content": f"🎉 **{name}** が再入荷しました！\n{url}"
+        })
+
+    state[name] = now
+
 with open("state.json", "w") as f:
     json.dump(state, f)
-
-
-
