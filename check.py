@@ -32,13 +32,14 @@ for item in items:
 
     if not before and now:
         requests.post(WEBHOOK, json={
-            "content": f"🎉 @Arisu **{name}** が再入荷しました！\n{url}"
+            "content": f"🎉 @everyone **{name}** が再入荷しました！\n{url}"
         })
 
     state[name] = now
 
 with open("state.json", "w") as f:
     json.dump(state, f)
+
 
 
 
