@@ -23,4 +23,4 @@ jobs:
       - name: 実行
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-        run: python restockchecker.py
+        run: python check.py
