@@ -1,0 +1,26 @@
+name: Restock Checker
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"  # 5分ごと
+  workflow_dispatch:       # 手動実行も可
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pythonセットアップ
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: ライブラリインストール
+        run: pip install requests
+
+      - name: 実行
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        run: python restockchecker.py
